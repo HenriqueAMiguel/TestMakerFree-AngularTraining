@@ -48,7 +48,7 @@ namespace TestMakerFreeWebApp
                     //Disable caching for all static files;
                     context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:CacheControl"];
                     context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
-                    context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"]; ;
+                    context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
                 }
             });
 
