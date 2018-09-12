@@ -11,8 +11,47 @@ namespace TestMakerFreeWebApp.Controllers
     [Route("api/[controller]")]
     public class QuizController : Controller
     {
-        //GET: api/quiz/latest
-        [HttpGet("Latest/(num)")]
+        #region RESTful conversions methods
+        /// <summary>
+        /// GET: api/quiz/{}id
+        /// Retrieves de Quis with the given {id}
+        /// </summary>
+        /// <param name="id">The ID of an existing Quiz</param>
+        /// <returns>the Quiz with the given {id}</returns>
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            //create a sample quiz to match the given request
+
+            var v = new QuizViewModel()
+            {
+                Id = id,
+                Title = string.Format($"Sample quiz with id {0}", id),
+                Description = "Not a real quiz: it's justa a sample!",
+                CreatedTime = DateTime.Now,
+                LastModifiedDate = DateTime.Now
+            };
+
+            //output the result in JSON format
+            return new JsonResult(
+                v,
+                new JsonSerializerSettings()
+                {
+                    Formatting = Formatting.Indented
+                });
+        }
+        #endregion
+
+        #region Atribute-based routing methods
+        /// <summary>
+        /// Get: api/quiz/latest
+        /// Retrieves the {num] latest Quizzes
+        /// </summary>
+        /// <param name="num">the number of quizzes to retrieve</param>
+        /// <returns>the {num} latest Quizzes</returns>
+
+        //GET api/quiz/latest
+        [HttpGet("Latest/{num}")]
         public IActionResult Latest(int num = 10)
         {
             var sampleQuizzes = new List<QuizViewModel>();
@@ -48,11 +87,13 @@ namespace TestMakerFreeWebApp.Controllers
                 });
         }
 
+        #endregion
+
         ///<sumary>
         ///GET: api/quiz/ByTitle
         ///Retrieves the {num} Quizzes sorted by Title (A to Z)
         ///</sumary>
-        //<param name="num">the number of quizzes to retrieve</param>
+        ///<param name="num">the number of quizzes to retrieve</param>
         ///<returns>{num} Quizzes sorted by Title</returns>
         [HttpGet("ByTitle/{num:int?}")]
         public IActionResult ByTitle(int num = 10)
@@ -70,7 +111,7 @@ namespace TestMakerFreeWebApp.Controllers
         ///GET: api/quiz/mostViewed
         ///Retrieves the {num} random Quizzes
         ///</sumary>
-        //<param name="num">the number of quizzes to retrieve</param>
+        ///<param name="num">the number of quizzes to retrieve</param>
         ///<returns>{num} random Quizzes</returns>
         [HttpGet("Random/{num:int?}")]
         public IActionResult Random(int num = 10)
